@@ -1,0 +1,147 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Authentication",
+    "version": "1.0.0",
+    "description": "Obtain and use bearer tokens for the Batch API.\n\nAuthentication uses the OAuth 2.0 client credentials grant. Credentials (`clientId` and `clientSecret`) are scoped per company.\n\nAll External API endpoints require `Authorization: Bearer {access_token}`."
+  },
+  "servers": [
+    {
+      "url": "https://stage-api.signinc.com",
+      "description": "Production"
+    }
+  ],
+  "paths": {
+    "/oauth/token": {
+      "post": {
+        "operationId": "getToken",
+        "summary": "Authenticate",
+        "description": "Issues a bearer access token using the OAuth 2.0 client credentials grant.\n\n**Requirements:**\n- `Content-Type: application/json` — enforced; returns `401` on mismatch.\n- `Authorization: Basic base64(clientId:clientSecret)` header.\n- Request body must contain `{\"grant_type\": \"client_credentials\"}`.\n\nTokens are UUID v4 strings. They expire after **1 hour**. There is no refresh token — re-authenticate to obtain a new one.",
+        "security": [
+          { "basicAuth": [] }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["grant_type"],
+                "properties": {
+                  "grant_type": {
+                    "type": "string",
+                    "enum": ["client_credentials"]
+                  }
+                }
+              },
+              "example": {
+                "grant_type": "client_credentials"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Access token issued.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/TokenResponse" },
+                "example": {
+                  "access_token": "550e8400-e29b-41d4-a716-446655440000",
+                  "token_type": "bearer",
+                  "expires_in": "3600"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication failed.",
+            "headers": {
+              "WWW-Authenticate": {
+                "schema": { "type": "string" },
+                "description": "Set to `Basic` when credentials are invalid."
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/OAuthError" },
+                "examples": {
+                  "invalidCredentials": {
+                    "summary": "Wrong clientId or clientSecret",
+                    "value": {
+                      "error": "invalid_client",
+                      "error_description": "invalid credentials"
+                    }
+                  },
+                  "wrongGrantType": {
+                    "summary": "Missing or wrong grant_type",
+                    "value": {
+                      "error": "invalid_request",
+                      "error_description": "grant_type=client_credentials should be sent for this request"
+                    }
+                  },
+                  "wrongContentType": {
+                    "summary": "Wrong Content-Type",
+                    "value": {
+                      "error": "invalid_request",
+                      "error_description": "application/json Content-Type should be used for this request"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic",
+        "description": "Base64-encoded `clientId:clientSecret`."
+      },
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Bearer token obtained from `POST /oauth/token`. Pass as `Authorization: Bearer {access_token}`. Expires after 1 hour. A `401` with `{\"error\": \"invalid_token\"}` means the token is missing, expired, or not found."
+      }
+    },
+    "schemas": {
+      "TokenResponse": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "description": "UUID v4 bearer token."
+          },
+          "token_type": {
+            "type": "string",
+            "enum": ["bearer"]
+          },
+          "expires_in": {
+            "type": "string",
+            "enum": ["3600"],
+            "description": "Lifetime in seconds, returned as a string. Always `\"3600\"` (1 hour)."
+          }
+        }
+      },
+      "OAuthError": {
+        "type": "object",
+        "description": "Returned on token issuance failure and on protected endpoint auth failure.",
+        "properties": {
+          "error": {
+            "type": "string",
+            "enum": ["invalid_request", "invalid_client", "invalid_token"],
+            "description": "`invalid_request`: malformed request. `invalid_client`: bad credentials or grant_type. `invalid_token`: bearer token expired or not found (returned by protected endpoints)."
+          },
+          "error_description": {
+            "type": ["string", "null"],
+            "description": "Human-readable detail. May be absent on unhandled exceptions."
+          }
+        }
+      }
+    }
+  }
+}

@@ -8,6 +8,7 @@
     "dark": "#15803D"
   },
   "favicon": "/favicon.svg",
+  "customCss": ["/styles/custom.css"],
   "navigation": {
     "tabs": [
       {
@@ -18,7 +19,8 @@
             "pages": [
               "index",
               "quickstart",
-              "development"
+              "development",
+              "webhooks"
             ]
           },
           {
@@ -48,7 +50,7 @@
         ]
       },
       {
-        "tab": "API reference",
+        "tab": "API Reference",
         "groups": [
           {
             "group": "API documentation",
@@ -63,6 +65,34 @@
               "api-reference/endpoint/create",
               "api-reference/endpoint/delete",
               "api-reference/endpoint/webhook"
+            ]
+          },
+          {
+            "group": "Authentication",
+            "openapi": "/api-reference/authentication.json",
+            "pages": [
+              "POST /oauth/token"
+            ]
+          },
+          {
+            "group": "Endpoints",
+            "openapi": "/api-reference/endpoints_openapi.json",
+            "pages": [
+              "GET /senders",
+              "GET /teams",
+              "GET /templates",
+              "GET /template/{templateUuid}",
+              "GET /signrequests",
+              "GET /signrequest/{signrequestUuid}",
+              "GET /signrequest/weblink/participant/{participantUuid}",
+              "GET /signrequest/embed/participant/{participantUuid}",
+              "POST /signrequest/send/template/{templateUuid}",
+              "POST /signrequest/{signrequestUuid}/cancel",
+              "POST /signrequest/complete/participant/{participantUuid}",
+              "POST /signrequest/{signrequestUuid}/download",
+              "POST /files/signrequest/{signrequestUuid}/download",
+              "POST /signrequest/file/{fileUuid}/download",
+              "POST /signrequest/{signrequestUuid}/audit_trail/download"
             ]
           }
         ]
@@ -90,13 +120,17 @@
   "navbar": {
     "links": [
       {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "label": "Guides",
+        "href": "/index"
+      },
+      {
+        "label": "API Reference",
+        "href": "/api-reference/introduction"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
+      "label": "Sign in",
       "href": "https://dashboard.mintlify.com"
     }
   },

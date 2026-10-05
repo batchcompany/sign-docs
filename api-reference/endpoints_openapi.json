@@ -1,0 +1,2584 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "API Endpoints",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://stage-api.signinc.com"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "sec0": {
+        "type": "oauth2",
+        "flows": {}
+      }
+    }
+  },
+  "security": [
+    {
+      "sec0": []
+    }
+  ],
+  "paths": {
+    "/senders": {
+      "get": {
+        "summary": "Get list of senders",
+        "description": "This endpoint returns a list of your company's registered senders. It can be used to locate a `senderId`, which is a required parameter when [sending a sign request](https://signinc.readme.io/reference/send-sign-request).",
+        "operationId": "get-list-of-users",
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The number of senders to skip.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The total number of senders to return. Default 500. Maximum 500.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "[\n  {\n    \"id\": 133,\n    \"email\": \"britta@batchsign.com\",\n    \"firstName\": \"Britta\",\n    \"lastName\": \"Madison\"\n  },\n  {\n    \"id\": 134,\n    \"email\": \"johnny@batchsign.com\",\n    \"firstName\": \"Johnny\",\n    \"lastName\": \"Utah\"\n  },\n  {\n    \"id\": 135,\n    \"email\": \"Samueluel@batchsign.com\",\n    \"firstName\": \"Samuel\",\n    \"lastName\": \"Pack\"\n  }\n]"
+                  }
+                },
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "uuid": {
+                        "type": "string",
+                        "description": "Sender UUID",
+                        "example": "00000000-0000-4000-8000-000000000001",
+                        "default": 0
+                      },
+                      "email": {
+                        "type": "string",
+                        "description": "Sender email",
+                        "example": "britta@batchsign.com"
+                      },
+                      "firstName": {
+                        "type": "string",
+                        "description": "Sender first name",
+                        "example": "Britta"
+                      },
+                      "lastName": {
+                        "type": "string",
+                        "description": "Sender last name",
+                        "example": "Madison"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"errorKey\": \"Invalid request\",\n  \"errorMessage\": \"Error description\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "description": "Error key",
+                      "example": "Invalid request"
+                    },
+                    "errorMessage": {
+                      "type": "string",
+                      "description": "Error description",
+                      "example": "Error description"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"error\": \"invalid_token\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Oauth 2 authentication error. Typically `invalid_token`",
+                      "example": "invalid_token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/teams": {
+      "get": {
+        "summary": "Get list of teams",
+        "description": "This endpoint returns list of teams. It can be used to locate a `teamId`, which can then be used to filter other API requests (e.g., [Get template](https://signinc.readme.io/reference/get-template) or [Get sign request](https://signinc.readme.io/reference/get-sign-request)).",
+        "operationId": "get-list-of-teams",
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The number of teams to skip.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The total number of teams to return. Default 500. Maximum value is 500.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "[\n    {\n        \"id\": 1,\n        \"name\": \"Good Fellas\"\n    },\n    {\n        \"id\": 5,\n        \"name\": \"Friends\"\n    }\n]"
+                  }
+                },
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "uuid": {
+                        "type": "string",
+                        "description": "Team UUID",
+                        "example": "00000000-0000-4000-8000-000000000002",
+                        "default": 0
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "Team name",
+                        "example": "Good Fellas"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"errorKey\": \"Invalid request\",\n  \"errorMessage\": \"Error description\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "description": "Error key",
+                      "example": "Invalid request"
+                    },
+                    "errorMessage": {
+                      "type": "string",
+                      "description": "Error description",
+                      "example": "Error description"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"error\": \"invalid_token\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Oauth 2 authentication error. Typically `invalid_token`",
+                      "example": "invalid_token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/templates": {
+      "get": {
+        "summary": "Get list of templates",
+        "description": "This endpoint returns a list of templates.",
+        "operationId": "get-list-of-templates",
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The number of templates to skip.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The total number of templates to return. Default 500. Maximum value is 500.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "A filter that returns only templates with a specified status. Possible values are: `Draft`, `Active`, `Inactive`, `Disabled`. Case-insensitive. If an incorrect value is provided, then the filter will be ignored.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "teamUuid",
+            "in": "query",
+            "description": "A filter that returns only templates associated with a specified `teamId`.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ownerUuid",
+            "in": "query",
+            "description": "A filter that returns only templates associated with a specified `ownerId`.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "[\n  {\n    \"id\": 34,\n    \"name\": \"Employee contract template\",\n    \"status\": \"Active\",\n    \"formType\": \"Form\",\n    \"savedTime\": \"2020-06-18 18:16:19\",\n    \"publishedTime\": \"2020-06-18 18:16:29\",\n    \"roles\": [\n      {\n        \"id\": 3,\n        \"name\": \"CEO\",\n        \"sequence\": 0\n      },\n      {\n        \"id\": 4,\n        \"name\": \"Employee\",\n        \"sequence\": 1\n      },\n      {\n        \"id\": 5,\n        \"name\": \"Accountant\",\n        \"sequence\": 2\n      }\n    ]\n  },\n  {\n    \"id\": 35,\n    \"name\": \"Accountant form template\",\n    \"status\": \"Active\",\n    \"formType\": \"Document\",\n    \"savedTime\": \"2020-10-02 09:02:48\",\n    \"publishedTime\": \"2020-12-10 13:18:39\",\n    \"roles\": [\n      {\n        \"id\": 39,\n        \"name\": \"Accountant\",\n        \"sequence\": 0\n      }\n    ]\n  }\n]"
+                  }
+                },
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "uuid": {
+                        "type": "string",
+                        "description": "Template UUID",
+                        "example": "00000000-0000-4000-8000-000000000003",
+                        "default": 0
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "Template name",
+                        "example": "Employee contract template"
+                      },
+                      "status": {
+                        "type": "string",
+                        "description": "Template status. Possible values are: `Draft`, `Active`, `Inactive`, `Disabled`",
+                        "example": "Active"
+                      },
+                      "formType": {
+                        "type": "string",
+                        "description": "Template type. Possible values are `Form` or `Document`",
+                        "example": "Form"
+                      },
+                      "savedTime": {
+                        "type": "string",
+                        "description": "The time the template was last saved",
+                        "example": "2020-06-18 18:16:19"
+                      },
+                      "publishedTime": {
+                        "type": "string",
+                        "description": "The time the template was last published",
+                        "example": "2020-06-18 18:16:29"
+                      },
+                      "roles": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "uuid": {
+                              "type": "string",
+                              "description": "Sign role UUID",
+                              "example": "00000000-0000-4000-8000-000000000004",
+                              "default": 0
+                            },
+                            "name": {
+                              "type": "string",
+                              "description": "Sign role name",
+                              "example": "CEO"
+                            },
+                            "sequence": {
+                              "type": "integer",
+                              "description": "The sequence in which the sign role appears in our user interfaces and, if applicable, the sequence in which the sign role participates in a sign request.",
+                              "example": 0,
+                              "default": 0
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"errorKey\": \"Invalid request\",\n  \"errorMessage\": \"Error description\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "description": "Error key",
+                      "example": "Invalid request"
+                    },
+                    "errorMessage": {
+                      "type": "string",
+                      "description": "Error description",
+                      "example": "Error description"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"error\": \"invalid_token\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Oauth 2 authentication error. Typically `invalid_token`",
+                      "example": "invalid_token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/template/{templateUuid}": {
+      "get": {
+        "summary": "Get template",
+        "description": "This endpoint returns information for a specified template.",
+        "operationId": "get-template",
+        "parameters": [
+          {
+            "name": "templateUuid",
+            "in": "path",
+            "description": "The UUID of the template that should be returned.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": {
+                      "uuid": 1987822,
+                      "name": "Acceptance act with encryption",
+                      "status": "Active",
+                      "formType": "Document",
+                      "savedTime": "2025-07-07 13:00:56",
+                      "publishedTime": "2025-07-07 13:00:56",
+                      "authType": "E2EE with email authentication",
+                      "roles": [
+                        {
+                          "uuid": 3929283,
+                          "name": "CEO",
+                          "sequence": 0
+                        },
+                        {
+                          "uuid": 3929284,
+                          "name": "Employee",
+                          "sequence": 0
+                        }
+                      ],
+                      "serverSecret": "TnE0kIgVKNGIIptfNzECoQ99hJlka0tEqFicrku9N1c=",
+                      "salt": "OTY5Njk2OTY5Njk2OTY5Ng=="
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "uuid": {
+                      "type": "string",
+                      "description": "The template UUID",
+                      "example": "00000000-0000-4000-8000-000000000005",
+                      "default": 0
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "The template name",
+                      "example": "Acceptance act with encryption"
+                    },
+                    "status": {
+                      "type": "string",
+                      "description": "The template status. Possible values are: `Draft`, `Active`, `Inactive`, `Disabled`",
+                      "example": "Active"
+                    },
+                    "formType": {
+                      "type": "string",
+                      "description": "The template type. Possible values are `Form` or `Document`",
+                      "example": "Document"
+                    },
+                    "savedTime": {
+                      "type": "string",
+                      "description": "The time the template was last saved",
+                      "example": "2025-07-07 13:00:56"
+                    },
+                    "publishedTime": {
+                      "type": "string",
+                      "description": "The time the template was last published",
+                      "example": "2025-07-07 13:00:56"
+                    },
+                    "authType": {
+                      "type": "string",
+                      "description": "The authentication method applied to the template. Possible values are: `No authentication`, `Email authentication`, `SMS authentication`, `OOB authentication`, `E2EE with email authentication`, `E2EE with SMS authentication`, `E2EE with OOB authentication`",
+                      "example": "E2EE with email authentication"
+                    },
+                    "roles": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "uuid": {
+                            "type": "string",
+                            "description": "Sign role UUID",
+                            "example": "00000000-0000-4000-8000-000000000006",
+                            "default": 0
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Sign role name",
+                            "example": "CEO"
+                          },
+                          "sequence": {
+                            "type": "integer",
+                            "description": "The sequence in which the sign role appears in the UI and, if applicable, the order of signing",
+                            "example": 0,
+                            "default": 0
+                          }
+                        }
+                      }
+                    },
+                    "serverSecret": {
+                      "type": "string",
+                      "description": "A base64-encoded string used for encryption key derivation",
+                      "example": "TnE0kIgVKNGIIptfNzECoQ99hJlka0tEqFicrku9N1c="
+                    },
+                    "salt": {
+                      "type": "string",
+                      "description": "A base64-encoded string used to salt key derivation",
+                      "example": "OTY5Njk2OTY5Njk2OTY5Ng=="
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400 Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "description": "Error key",
+                      "example": "Invalid request"
+                    },
+                    "errorMessage": {
+                      "type": "string",
+                      "description": "Error description",
+                      "example": "Error description"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401 Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "OAuth 2 authentication error. Typically `invalid_token`",
+                      "example": "invalid_token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/signrequests": {
+      "get": {
+        "summary": "Get list of sign requests",
+        "description": "This endpoint returns a list of sign requests. It can be used to locate the `signrequestId` for a given sign request, which can then be used in other API requests (e.g., [Get sign request](https://signinc.readme.io/reference/get-sign-request), [Complete sign request](https://signinc.readme.io/reference/complete-sign-request), [Download files](https://signinc.readme.io/reference/download-files), [Download file URLs](https://signinc.readme.io/reference/download-file-urls), [Download file URL](https://signinc.readme.io/reference/download-file-url), [Cancel sign request](https://signinc.readme.io/reference/cancel-sign-request), or [Download audit trail](https://signinc.readme.io/reference/download-audit-trail)).",
+        "operationId": "get-list-of-sign-requests",
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The number of sign requests to skip.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The total number of sign requests to return. Default 500. Maximum value is 500.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "A filter that returns only sign requests with a specified status. Possible values are: `Draft`, `Sent`, `Completed`, `Declined`. Case-insensitive. If an incorrect value is provided, then the filter will be ignored.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "teamUuid",
+            "in": "query",
+            "description": "A filter that returns only sign requests associated with a specified `teamId`.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "senderUuid",
+            "in": "query",
+            "description": "A filter that returns only sign requests associated with a specified `senderId`.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ownerUuid",
+            "in": "query",
+            "description": "A filter that returns only sign requests associated with a specified `ownerId`.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "[\n  {\n    \"id\": 41,\n    \"name\": \"Contract #1\",\n    \"status\": \"Completed\",\n    \"formType\": \"Form\",\n    \"participants\": [\n      {\n        \"id\": 3,\n        \"name\": \"Johnny Utah\",\n        \"email\": \"johnny@batchsign.com\",\n        \"status\": \"Draft\",\n        \"role\": {\n          \"id\": 3,\n          \"name\": \"Employee\",\n          \"sequence\": 0\n        }\n      }\n    ],\n    \"savedTime\": \"2020-08-28 13:28:10\"\n  },\n  {\n    \"id\": 42,\n    \"name\": \"Agreement #2\",\n    \"status\": \"Sent\",\n    \"formType\": \"Document\",\n    \"participants\": [\n      {\n        \"id\": 4,\n        \"name\": \"Tyler Petty\",\n        \"email\": \"tyler@batchsign.com\",\n        \"status\": \"Sent\",\n        \"role\": {\n          \"id\": 5,\n          \"name\": \"Employee\",\n          \"sequence\": 0\n        }\n      },\n      {\n        \"id\": 5,\n        \"name\": \"Britta Madison\",\n        \"email\": \"britta@batchsign.com\",\n        \"status\": \"Sent\",\n        \"role\": {\n          \"id\": 6,\n          \"name\": \"CEO\",\n          \"sequence\": 1\n        }\n      },\n      {\n        \"id\": 6,\n        \"name\": \"Samuel Pack\",\n        \"email\": \"Samueluel@batchsign.com\",\n        \"status\": \"Sent\",\n        \"role\": {\n          \"id\": 7,\n          \"name\": \"CTO\",\n          \"sequence\": 2\n        }\n      }\n    ],\n    \"savedTime\": \"2020-08-28 14:37:44\"\n  }\n]"
+                  }
+                },
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "uuid": {
+                        "type": "string",
+                        "description": "Sign request UUID",
+                        "example": "00000000-0000-4000-8000-000000000007",
+                        "default": 0
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "Sign request name",
+                        "example": "Contract #1"
+                      },
+                      "status": {
+                        "type": "string",
+                        "description": "Sign request status. Possible values: `Draft`, `Sent`, `Completed`, `Declined`",
+                        "example": "Completed"
+                      },
+                      "formType": {
+                        "type": "string",
+                        "description": "The type of the sign request. Possible values: `Form`, `Document`",
+                        "example": "Form"
+                      },
+                      "participants": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "uuid": {
+                              "type": "string",
+                              "description": "Participant UUID",
+                              "example": "00000000-0000-4000-8000-000000000008",
+                              "default": 0
+                            },
+                            "name": {
+                              "type": "string",
+                              "description": "Participant name",
+                              "example": "Johnny Utah"
+                            },
+                            "email": {
+                              "type": "string",
+                              "description": "Participant email",
+                              "example": "johnny@batchsign.com"
+                            },
+                            "status": {
+                              "type": "string",
+                              "description": "Participant status. Possible values: `Draft`, `Sent`, `Viewed`, `Signed`, `Declined`",
+                              "example": "Draft"
+                            },
+                            "role": {
+                              "type": "object",
+                              "properties": {
+                                "uuid": {
+                                  "type": "string",
+                                  "description": "Sign role UUID",
+                                  "example": "00000000-0000-4000-8000-000000000009",
+                                  "default": 0
+                                },
+                                "name": {
+                                  "type": "string",
+                                  "description": "Sign role name",
+                                  "example": "Employee"
+                                },
+                                "sequence": {
+                                  "type": "integer",
+                                  "description": "The sequence in which the sign role appears in our user interfaces and, if applicable, the sequence in which the sign role participates in a sign request.",
+                                  "example": 0,
+                                  "default": 0
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "savedTime": {
+                        "type": "string",
+                        "description": "The time the sign request was last saved",
+                        "example": "2020-08-28 13:28:10"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"errorKey\": \"Invalid request\",\n  \"errorMessage\": \"Error description\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "description": "Error key",
+                      "example": "Invalid request"
+                    },
+                    "errorMessage": {
+                      "type": "string",
+                      "description": "Error description",
+                      "example": "Error description"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"error\": \"invalid_token\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Oauth 2 authentication error. Typically `invalid_token`",
+                      "example": "invalid_token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/signrequest/{signrequestUuid}": {
+      "get": {
+        "summary": "Get sign request",
+        "description": "This endpoint returns information for a specified sign request.",
+        "operationId": "get-sign-request",
+        "parameters": [
+          {
+            "name": "signrequestUuid",
+            "in": "path",
+            "description": "The UUID of the sign request that should be returned.",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "uuid": {
+                      "type": "string",
+                      "description": "Sign request UUID",
+                      "example": "00000000-0000-4000-8000-00000000000a"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Name of the sign request",
+                      "example": "Acceptance act with encryption"
+                    },
+                    "status": {
+                      "type": "string",
+                      "description": "Current status of the sign request",
+                      "example": "Sent"
+                    },
+                    "formType": {
+                      "type": "string",
+                      "description": "Document or Form",
+                      "example": "Document"
+                    },
+                    "authType": {
+                      "type": "string",
+                      "description": "The authentication method applied to the sign request. Example values include: `No authentication`, `Email authentication`, `SMS authentication`, `OOB authentication`, `E2EE with email authentication`, `E2EE with SMS authentication`, `E2EE with OOB authentication`.",
+                      "example": "E2EE with email authentication"
+                    },
+                    "savedTime": {
+                      "type": "string",
+                      "description": "Last saved timestamp",
+                      "example": "2025-07-07 13:22:57"
+                    },
+                    "serverSecret": {
+                      "type": "string",
+                      "description": "A base64-encoded server-side string used for key derivation",
+                      "example": "TnE0kIgVKNGIIptfNzECoQ99hJlka0tEqFicrku9N1c="
+                    },
+                    "salt": {
+                      "type": "string",
+                      "description": "A base64-encoded salt value used for key derivation",
+                      "example": "OTY5Njk2OTY5Njk2OTY5Ng=="
+                    },
+                    "participants": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "uuid": {
+                            "type": "string",
+                            "description": "Participant UUID",
+                            "example": "00000000-0000-4000-8000-00000000000b"
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Participant name",
+                            "example": "CEO"
+                          },
+                          "email": {
+                            "type": "string",
+                            "description": "Participant email",
+                            "example": "jdoe@gmail.com"
+                          },
+                          "status": {
+                            "type": "string",
+                            "description": "Participant signing status",
+                            "example": "Sent"
+                          },
+                          "role": {
+                            "type": "object",
+                            "properties": {
+                              "uuid": {
+                                "type": "string",
+                                "description": "Sign role UUID",
+                                "example": "00000000-0000-4000-8000-00000000000c"
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "Role name",
+                                "example": "First Last"
+                              },
+                              "sequence": {
+                                "type": "integer",
+                                "description": "Signing sequence",
+                                "example": 0
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "fields": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "uuid": {
+                            "type": "string",
+                            "description": "Field UUID",
+                            "example": "00000000-0000-4000-8000-00000000000d"
+                          },
+                          "roleUuid": {
+                            "type": "string",
+                            "description": "Role UUID associated with the field",
+                            "example": "00000000-0000-4000-8000-00000000000e"
+                          },
+                          "required": {
+                            "type": "boolean",
+                            "description": "Is this field required?",
+                            "example": true
+                          },
+                          "isMasked": {
+                            "type": "boolean",
+                            "description": "If true, field data is masked in UI",
+                            "example": false
+                          },
+                          "type": {
+                            "type": "string",
+                            "description": "Field type",
+                            "example": "text"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Response Example": {
+                    "value": {
+                      "uuid": 1987823,
+                      "name": "Acceptance act with encryption",
+                      "status": "Sent",
+                      "formType": "Document",
+                      "authType": "E2EE with email authentication",
+                      "savedTime": "2025-07-07 13:22:57",
+                      "serverSecret": "TnE0kIgVKNGIIptfNzECoQ99hJlka0tEqFicrku9N1c=",
+                      "salt": "OTY5Njk2OTY5Njk2OTY5Ng==",
+                      "participants": [
+                        {
+                          "uuid": 1858443,
+                          "name": "CEO",
+                          "email": "jdoe@gmail.com",
+                          "status": "Sent",
+                          "role": {
+                            "uuid": 3929285,
+                            "name": "CEO",
+                            "sequence": 0
+                          }
+                        },
+                        {
+                          "uuid": 1858444,
+                          "name": "John Doe",
+                          "email": "jdoe@gmail.com",
+                          "status": "Sent",
+                          "role": {
+                            "uuid": 3929286,
+                            "name": "First Last",
+                            "sequence": 0
+                          }
+                        }
+                      ],
+                      "fields": [
+                        {
+                          "uuid": 7350133,
+                          "roleUuid": 3929285,
+                          "required": true,
+                          "isMasked": false,
+                          "type": "text"
+                        },
+                        {
+                          "uuid": 7350134,
+                          "roleUuid": 3929286,
+                          "required": true,
+                          "isMasked": false,
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"errorKey\": \"Invalid request\",\n  \"errorMessage\": \"Error description\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "description": "Error key",
+                      "example": "Invalid request"
+                    },
+                    "errorMessage": {
+                      "type": "string",
+                      "description": "Error description",
+                      "example": "Error description"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"error\": \"invalid_token\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Oauth 2 authentication error. Typically `invalid_token`",
+                      "example": "invalid_token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/signrequest/weblink/participant/{participantUuid}": {
+      "get": {
+        "summary": "Get sign request link",
+        "description": "This endpoint returns a sign request weblink for an authenticated participant.",
+        "operationId": "get-sign-request-weblink",
+        "parameters": [
+          {
+            "name": "participantUuid",
+            "in": "path",
+            "description": "The UUID of the participant for whom weblink should be returned.",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n \"weblink\": \"https://app.batchsign.com/signdocument?hash=D1ucgKkm8mFOJvOIFuXJGg%3D%3D\" \n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "weblink": {
+                      "type": "string",
+                      "description": "Participant weblink",
+                      "example": "https://app.batchsign.com/signdocument?hash=D1ucgKkm8mFOJvOIFuXJGg%3D%3D"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"errorKey\": \"Invalid request\",\n  \"errorMessage\": \"Error description\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "description": "Error key",
+                      "example": "Invalid request"
+                    },
+                    "errorMessage": {
+                      "type": "string",
+                      "description": "Error description",
+                      "example": "Error description"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"error\": \"invalid_token\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Oauth 2 authentication error. Typically `invalid_token`",
+                      "example": "invalid_token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/signrequest/embed/participant/{participantUuid}": {
+      "get": {
+        "summary": "Embed sign request",
+        "description": "This endpoint returns an embeddable code snippet for a specified participant.",
+        "operationId": "embed-sign-request",
+        "parameters": [
+          {
+            "name": "participantUuid",
+            "in": "path",
+            "description": "UUID of the participant for whom the embeddable code snippet should be returned.",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n \"embeddableCode\":\"<iframe width=\"100%\" height=\"800px\" src=\"https://app.batchsign.com/signdocument/WAcwjqOH%2F1J%2Bh5AfdJWkAw%3D%3D\" title=\"Template API test 3\" frameborder=\"0\" ></iframe>\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "embeddableCode": {
+                      "type": "string",
+                      "description": "An embeddable code snippet specific to a given participant",
+                      "example": "{\n \"embeddableCode\":<iframe width=\"100%\" height=\"800px\" src=\"https://app.batchsign.com/signdocument/WAcwjqOH%2F1J%2Bh5AfdJWkAw%3D%3D\" title=\"Template API test 3\" frameborder=\"0\" ></iframe>\n}"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"errorKey\": \"Invalid request\",\n  \"errorMessage\": \"Error description\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "description": "Error key",
+                      "example": "Invalid request"
+                    },
+                    "errorMessage": {
+                      "type": "string",
+                      "description": "Error description",
+                      "example": "Error description"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"error\": \"invalid_token\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Oauth 2 authentication error. Typically `invalid_token`",
+                      "example": "invalid_token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/signrequest/send/template/{templateUuid}": {
+      "post": {
+        "summary": "Send sign request",
+        "description": "This endpoint sends a new sign request using a specified template. Only active templates can be used to send a sign request.",
+        "operationId": "send-sign-request",
+        "parameters": [
+          {
+            "name": "templateUuid",
+            "in": "path",
+            "description": "The UUID of the template that should be used to send the sign request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "senderId",
+                  "participants"
+                ],
+                "properties": {
+                  "senderUuid": {
+                    "type": "string",
+                    "description": "The UUID of the sender that should be identified as the sender of the sign request."
+                  },
+                  "clientSecret": {
+                    "type": "string",
+                    "description": "A base64-encoded client-side encryption secret. Required when the template uses one of the following auth types: `E2EE with email authentication`, `E2EE with SMS authentication`, `E2EE with OOB authentication`.",
+                    "example": "s3yE4FnvltgJYS5mdSiQ9+TpN2Ts7ohL4Jo1ccOc0TA="
+                  },
+                  "sendInvitations": {
+                    "type": "boolean",
+                    "description": "Whether or not invitation emails should be sent to participants."
+                  },
+                  "emailSubject": {
+                    "type": "string",
+                    "description": "The custom subject line for participant invitation emails."
+                  },
+                  "emailMessage": {
+                    "type": "string",
+                    "description": "The custom message body for participant invitation emails."
+                  },
+                  "participants": {
+                    "type": "array",
+                    "description": "A list of participants for the sign request. One for each signing role.",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "name",
+                        "email",
+                        "roleId"
+                      ],
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "The full name of the signing participant."
+                        },
+                        "email": {
+                          "type": "string",
+                          "description": "The email address of the signing participant."
+                        },
+                        "roleUuid": {
+                          "type": "string",
+                          "description": "The UUID of the role the participant is signing as."
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Request Example": {
+                  "value": {
+                    "senderUuid": 140,
+                    "clientSecret": "s3yE4FnvltgJYS5mdSiQ9+TpN2Ts7ohL4Jo1ccOc0TA=",
+                    "participants": [
+                      {
+                        "name": "First Last",
+                        "email": "flast@gmail.com",
+                        "roleUuid": 3929283
+                      },
+                      {
+                        "name": "First Last",
+                        "email": "flast@gmail.com",
+                        "roleUuid": 3929284
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200 OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "uuid": {
+                      "type": "string",
+                      "description": "Sign request UUID",
+                      "example": "00000000-0000-4000-8000-00000000000f"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Sign request name",
+                      "example": "Acceptance act with encryption"
+                    },
+                    "status": {
+                      "type": "string",
+                      "description": "Status of the sign request",
+                      "example": "Sent"
+                    },
+                    "formType": {
+                      "type": "string",
+                      "description": "Document or Form",
+                      "example": "Document"
+                    },
+                    "authType": {
+                      "type": "string",
+                      "description": "Authentication method used",
+                      "example": "E2EE with email authentication"
+                    },
+                    "savedTime": {
+                      "type": "string",
+                      "description": "When the request was saved",
+                      "example": "2025-07-07 13:22:56"
+                    },
+                    "serverSecret": {
+                      "type": "string",
+                      "description": "Server-side Base64-encoded encryption secret",
+                      "example": "TnE0kIgVKNGIIptfNzECoQ99hJlka0tEqFicrku9N1c="
+                    },
+                    "salt": {
+                      "type": "string",
+                      "description": "Base64-encoded salt used for key derivation",
+                      "example": "OTY5Njk2OTY5Njk2OTY5Ng=="
+                    },
+                    "participants": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "uuid": {
+                            "type": "string",
+                            "example": "00000000-0000-4000-8000-000000000010"
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "First Last"
+                          },
+                          "email": {
+                            "type": "string",
+                            "example": "flast@gmail.com"
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "Sent"
+                          },
+                          "role": {
+                            "type": "object",
+                            "properties": {
+                              "uuid": {
+                                "type": "string",
+                                "example": "00000000-0000-4000-8000-000000000011"
+                              },
+                              "name": {
+                                "type": "string",
+                                "example": "First Last"
+                              },
+                              "sequence": {
+                                "type": "integer",
+                                "example": 0
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "fields": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "uuid": {
+                            "type": "string",
+                            "example": "00000000-0000-4000-8000-000000000012"
+                          },
+                          "roleUuid": {
+                            "type": "string",
+                            "example": "00000000-0000-4000-8000-000000000013"
+                          },
+                          "required": {
+                            "type": "boolean",
+                            "example": true
+                          },
+                          "isMasked": {
+                            "type": "boolean",
+                            "example": false
+                          },
+                          "type": {
+                            "type": "string",
+                            "example": "text"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Response Example": {
+                    "value": {
+                      "uuid": 1987823,
+                      "name": "Acceptance act with encryption",
+                      "status": "Sent",
+                      "formType": "Document",
+                      "authType": "E2EE with email authentication",
+                      "savedTime": "2025-07-07 13:22:56",
+                      "serverSecret": "TnE0kIgVKNGIIptfNzECoQ99hJlka0tEqFicrku9N1c=",
+                      "salt": "OTY5Njk2OTY5Njk2OTY5Ng==",
+                      "participants": [
+                        {
+                          "uuid": 1858443,
+                          "name": "First Last",
+                          "email": "flast@gmail.com",
+                          "status": "Sent",
+                          "role": {
+                            "uuid": 3929285,
+                            "name": "First Last",
+                            "sequence": 0
+                          }
+                        },
+                        {
+                          "uuid": 1858444,
+                          "name": "First Last",
+                          "email": "flast@gmail.com",
+                          "status": "Sent",
+                          "role": {
+                            "uuid": 3929286,
+                            "name": "First Last",
+                            "sequence": 0
+                          }
+                        }
+                      ],
+                      "fields": [
+                        {
+                          "uuid": 7350133,
+                          "roleUuid": 3929285,
+                          "required": true,
+                          "isMasked": false,
+                          "type": "text"
+                        },
+                        {
+                          "uuid": 7350134,
+                          "roleUuid": 3929286,
+                          "required": true,
+                          "isMasked": false,
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"errorKey\": \"Invalid request\",\n  \"errorMessage\": \"Error description\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "description": "Error key",
+                      "example": "Invalid request"
+                    },
+                    "errorMessage": {
+                      "type": "string",
+                      "description": "Error description",
+                      "example": "Error description"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"error\": \"invalid_token\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Oauth 2 authentication error. Typically `invalid_token`",
+                      "example": "invalid_token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/signrequest/{signrequestUuid}/cancel": {
+      "post": {
+        "summary": "Cancel sign request",
+        "description": "This endpoint reverts a sign request back to the `Draft` status, deletes any associated [FieldData](https://signinc.readme.io/reference/fielddata) records, and invalidates any associated participant links. Only sign requests in the `Sent` state can be canceled.",
+        "operationId": "cancel-sign-request",
+        "parameters": [
+          {
+            "name": "signrequestUuid",
+            "in": "path",
+            "description": "The UUID of the sign request that should be canceled.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "uuid": {
+                      "type": "string",
+                      "example": "00000000-0000-4000-8000-000000000014"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Acceptance act with encryption"
+                    },
+                    "status": {
+                      "type": "string",
+                      "example": "Draft"
+                    },
+                    "formType": {
+                      "type": "string",
+                      "example": "Document"
+                    },
+                    "authType": {
+                      "type": "string",
+                      "description": "The authentication method applied to the sign request. Example values: `No authentication`, `Email authentication`, `SMS authentication`, `OOB authentication`, `E2EE with email authentication`, `E2EE with SMS authentication`, `E2EE with OOB authentication`",
+                      "example": "E2EE with email authentication"
+                    },
+                    "savedTime": {
+                      "type": "string",
+                      "description": "Timestamp of last save",
+                      "example": "2025-07-07 13:49:10"
+                    },
+                    "serverSecret": {
+                      "type": "string",
+                      "description": "A base64-encoded string used for encryption key derivation",
+                      "example": "TnE0kIgVKNGIIptfNzECoQ99hJlka0tEqFicrku9N1c="
+                    },
+                    "salt": {
+                      "type": "string",
+                      "description": "Base64-encoded string used to salt encryption keys",
+                      "example": "OTY5Njk2OTY5Njk2OTY5Ng=="
+                    },
+                    "participants": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "uuid": {
+                            "type": "string",
+                            "example": "00000000-0000-4000-8000-000000000015"
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "First Last"
+                          },
+                          "email": {
+                            "type": "string",
+                            "example": "flast@gmail.com"
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "Draft"
+                          },
+                          "role": {
+                            "type": "object",
+                            "properties": {
+                              "uuid": {
+                                "type": "string",
+                                "example": "00000000-0000-4000-8000-000000000016"
+                              },
+                              "name": {
+                                "type": "string",
+                                "example": "First Last"
+                              },
+                              "sequence": {
+                                "type": "integer",
+                                "example": 0
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "fields": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "uuid": {
+                            "type": "string",
+                            "example": "00000000-0000-4000-8000-000000000017"
+                          },
+                          "roleUuid": {
+                            "type": "string",
+                            "example": "00000000-0000-4000-8000-000000000018"
+                          },
+                          "required": {
+                            "type": "boolean",
+                            "example": true
+                          },
+                          "isMasked": {
+                            "type": "boolean",
+                            "example": false
+                          },
+                          "type": {
+                            "type": "string",
+                            "example": "text"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Response Example": {
+                    "value": {
+                      "uuid": 1987823,
+                      "name": "Acceptance act with encryption",
+                      "status": "Draft",
+                      "formType": "Document",
+                      "authType": "E2EE with email authentication",
+                      "savedTime": "2025-07-07 13:49:10",
+                      "serverSecret": "TnE0kIgVKNGIIptfNzECoQ99hJlka0tEqFicrku9N1c=",
+                      "salt": "OTY5Njk2OTY5Njk2OTY5Ng==",
+                      "participants": [
+                        {
+                          "uuid": 1858443,
+                          "name": "First Last",
+                          "email": "flast@gmail.com",
+                          "status": "Draft",
+                          "role": {
+                            "uuid": 3929285,
+                            "name": "First Last",
+                            "sequence": 0
+                          }
+                        },
+                        {
+                          "uuid": 1858444,
+                          "name": "First Last",
+                          "email": "flast@gmail.com",
+                          "status": "Draft",
+                          "role": {
+                            "uuid": 3929286,
+                            "name": "First Last",
+                            "sequence": 0
+                          }
+                        }
+                      ],
+                      "fields": [
+                        {
+                          "uuid": 7350133,
+                          "roleUuid": 3929285,
+                          "required": true,
+                          "isMasked": false,
+                          "type": "text"
+                        },
+                        {
+                          "uuid": 7350134,
+                          "roleUuid": 3929286,
+                          "required": true,
+                          "isMasked": false,
+                          "type": "text"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"errorKey\": \"Invalid request\",\n  \"errorMessage\": \"Error description\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "description": "Error key",
+                      "example": "Invalid request"
+                    },
+                    "errorMessage": {
+                      "type": "string",
+                      "description": "Error description",
+                      "example": "Error description"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"error\": \"invalid_token\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Oauth 2 authentication error. Typically `invalid_token`",
+                      "example": "invalid_token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/signrequest/complete/participant/{participantUuid}": {
+      "post": {
+        "summary": "Complete sign request",
+        "description": "This endpoint is used to complete a sign request for a specified participant.",
+        "operationId": "complete-sign-request",
+        "parameters": [
+          {
+            "name": "participantUuid",
+            "in": "path",
+            "description": "The UUID of the participant completing the sign request.",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "fieldData"
+                ],
+                "properties": {
+                  "clientSecret": {
+                    "type": "string",
+                    "description": "A base64-encoded client-side encryption secret. Required when the sign request uses one of the following auth types: `E2EE with email authentication`, `E2EE with SMS authentication`, `E2EE with OOB authentication`.",
+                    "example": "s3yE4FnvltgJYS5mdSiQ9+TpN2Ts7ohL4Jo1ccOc0TA="
+                  },
+                  "sendCompletionEmail": {
+                    "type": "boolean",
+                    "description": "Whether or not completion emails should be sent to participants. Defaults to `FALSE`. Ignored unless the subject participant is the last participant to complete the sign request."
+                  },
+                  "emailNextParticipant": {
+                    "type": "boolean",
+                    "description": "Whether or not to send a signature request email to the next participant. Defaults to `FALSE`. Ignored unless the sign request has multiple participants signing sequentially."
+                  },
+                  "fieldData": {
+                    "type": "array",
+                    "description": "An array of [FieldData](https://signinc.readme.io/reference/fielddata) objects required to complete a sign request for a specified `participantId`. Should contain an object for each of the subject participant’s required fields. Each [FieldData](https://signinc.readme.io/reference/fielddata) object should contain only one of the following: (1) `fieldChoiceId`, (2) `imageContent` and `imageMimetype` OR (3) `value` as defined below.",
+                    "items": {
+                      "properties": {
+                        "fieldUuid": {
+                          "type": "string",
+                          "description": "The UUID associated with the field data being provided."
+                        },
+                        "fieldChoiceUuid": {
+                          "type": "string",
+                          "description": "If the field type is `select` or `checkbox`, then provide the applicable `fieldChoiceId`."
+                        },
+                        "imageContent": {
+                          "type": "string",
+                          "description": "If the field type is `signature` or `initials` AND an image is being provided, then this property should be provided along with the `imageMimetype` property. If an image isn’t being provided, then the `value` property should be used instead. Important: Image content should be Base64 encoded with only the image content (i.e., without mimetype). Mimetype should be sent in the corresponding property below. That is, for example, instead of `data:image/png;base64,iVBORw0KG`, this property should only include `iVBORw0KG...`."
+                        },
+                        "imageMimetype": {
+                          "type": "string",
+                          "description": "If the field type is `signature` or `initials` AND an image is being provided, then this property should be provided along with the `imageContent` property. If an image isn’t being provided, then the `value` property should be used instead."
+                        },
+                        "value": {
+                          "type": "string",
+                          "description": "If the field type is not `select`, `signature`, or `initials`, then a string value should be provided for this property."
+                        }
+                      },
+                      "required": [
+                        "fieldId"
+                      ],
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"id\": 666,\n  \"name\": \"Document #45\",\n  \"status\": \"Completed\",\n  \"formType\": \"Document\",\n  \"participants\": [\n    {\n      \"id\": 718,\n      \"name\": \"Johnny Utah\",\n      \"email\": \"johnny@batchsign.com\",\n      \"status\": \"Signed\",\n      \"role\": {\n        \"id\": 934,\n        \"name\": \"CEO\",\n        \"sequence\": 0\n      },\n      \"fieldData\": [\n        {\n          \"id\": 1096,\n          \"fieldId\": 8345,\n          \"imageContent\": \"dataimage/pngbase64iVBORw0KGAAAQ4CAYAA...yAAAAAASUVORK5CYIA==\",\n          \"imageMimetype\": \"image/png\"\n        },\n        {\n          \"id\": 1097,\n          \"fieldId\": 8346,\n          \"value\": \"JS\"\n        },\n        {\n          \"id\": 1098,\n          \"fieldId\": 8347,\n          \"value\": \"02.09.2022\"\n        },\n        {\n          \"id\": 1099,\n          \"fieldId\": 8348,\n          \"value\": \"Simple text value\"\n        },\n        {\n          \"id\": 1100,\n          \"fieldId\": 8349,\n          \"value\": \"true\"\n        },\n        {\n          \"id\": 1101,\n          \"fieldId\": 8350,\n          \"fieldChoiceId\": 429\n        }\n      ]\n    }\n  ],\n  \"savedTime\": \"2022-09-02 19:22:45\",\n  \"fields\": [\n    {\n      \"id\": 8345,\n      \"roleId\": 934,\n      \"required\": true,\n      \"isMasked\": false,\n      \"type\": \"signature\"\n    },\n    {\n      \"id\": 8346,\n      \"roleId\": 934,\n      \"required\": true,\n      \"isMasked\": false,\n      \"type\": \"initials\"\n    },\n    {\n      \"id\": 8347,\n      \"roleId\": 934,\n      \"required\": true,\n      \"isMasked\": false,\n      \"type\": \"date\",\n    \"reference\": \"dateInput\"\n},\n    {\n      \"id\": 8348,\n      \"roleId\": 934,\n      \"required\": true,\n      \"isMasked\": false,\n      \"type\": \"text\"\n    },\n    {\n      \"id\": 8349,\n      \"roleId\": 934,\n      \"required\": false,\n      \"isMasked\": false,\n      \"type\": \"checkbox\"\n    },\n    {\n      \"id\": 8350,\n      \"roleId\": 934,\n      \"required\": true,\n      \"isMasked\": false,\n      \"type\": \"select\",\n      \"choices\": [\n        {\n          \"id\": 427,\n          \"text\": \"first choice\"\n        },\n        {\n          \"id\": 428,\n          \"text\": \"second choice\"\n        },\n        {\n          \"id\": 429,\n          \"text\": \"third choice\"\n        },\n        {\n          \"id\": 430,\n          \"text\": \"fourth choice\"\n        }\n      ]\n    }\n  ]\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "uuid": {
+                      "type": "string",
+                      "description": "Sign request UUID",
+                      "example": "00000000-0000-4000-8000-000000000019",
+                      "default": 0
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Sign request name",
+                      "example": "Document #45"
+                    },
+                    "status": {
+                      "type": "string",
+                      "description": "Sign request status. Possible values: `Draft`, `Sent`, `Completed`, `Declined`",
+                      "example": "Completed"
+                    },
+                    "formType": {
+                      "type": "string",
+                      "description": "The type of the sign request. Possible values: `Form`, `Document`",
+                      "example": "Document"
+                    },
+                    "participants": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "uuid": {
+                            "type": "string",
+                            "description": "Participant UUID",
+                            "example": "00000000-0000-4000-8000-00000000001a",
+                            "default": 0
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Participant name",
+                            "example": "Johnny Utah"
+                          },
+                          "email": {
+                            "type": "string",
+                            "description": "Participant email",
+                            "example": "johnny@batchsign.com"
+                          },
+                          "status": {
+                            "type": "string",
+                            "description": "Participant status. Possible values: `Draft`, `Sent`, `Viewed`, `Signed`, `Declined`",
+                            "example": "Signed"
+                          },
+                          "role": {
+                            "type": "object",
+                            "properties": {
+                              "uuid": {
+                                "type": "string",
+                                "description": "Sign role UUID",
+                                "example": "00000000-0000-4000-8000-00000000001b",
+                                "default": 0
+                              },
+                              "name": {
+                                "type": "string",
+                                "description": "Sign role name",
+                                "example": "CEO"
+                              },
+                              "sequence": {
+                                "type": "integer",
+                                "description": "The sequence in which the sign role appears in our user interfaces and, if applicable, the sequence in which the sign role participates in a sign request",
+                                "example": 0,
+                                "default": 0
+                              }
+                            }
+                          },
+                          "fieldData": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "uuid": {
+                                  "type": "string",
+                                  "description": "Field data UUID",
+                                  "example": "00000000-0000-4000-8000-00000000001c",
+                                  "default": 0
+                                },
+                                "fieldUuid": {
+                                  "type": "string",
+                                  "description": "The UUID of the field for which data was created",
+                                  "example": "00000000-0000-4000-8000-00000000001d",
+                                  "default": 0
+                                },
+                                "imageContent": {
+                                  "type": "string",
+                                  "description": "The Base64 encoded image content if the field type is `signature` or `initials` AND an image was provided",
+                                  "example": "dataimage/pngbase64iVBORw0KGAAAQ4CAYAA...yAAAAAASUVORK5CYIA=="
+                                },
+                                "imageMimetype": {
+                                  "type": "string",
+                                  "description": "The uploaded image mimetype if the field type is `signature` or `initials`",
+                                  "example": "image/png"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "authType": {
+                      "type": "string",
+                      "description": "The authentication method applied to the sign request. Possible values are: `No authentication`, `Email authentication`, `SMS authentication`, `OOB authentication`, `E2EE with email authentication`, `E2EE with SMS authentication`, `E2EE with OOB authentication`",
+                      "example": "E2EE with email authentication"
+                    },
+                    "serverSecret": {
+                      "type": "string",
+                      "description": "A base64-encoded string used for encryption key derivation",
+                      "example": "TnE0kIgVKNGIIptfNzECoQ99hJlka0tEqFicrku9N1c="
+                    },
+                    "salt": {
+                      "type": "string",
+                      "description": "A base64-encoded string used to salt key derivation",
+                      "example": "OTY5Njk2OTY5Njk2OTY5Ng=="
+                    },
+                    "savedTime": {
+                      "type": "string",
+                      "description": "The time the sign request was last saved",
+                      "example": "2022-09-02 19:22:45"
+                    },
+                    "fields": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "uuid": {
+                            "type": "string",
+                            "description": "Field UUID",
+                            "example": "00000000-0000-4000-8000-00000000001e",
+                            "default": 0
+                          },
+                          "roleUuid": {
+                            "type": "string",
+                            "description": "The sign role UUID associated with this field",
+                            "example": "00000000-0000-4000-8000-00000000001f",
+                            "default": 0
+                          },
+                          "required": {
+                            "type": "boolean",
+                            "description": "Whether a field is required for completion",
+                            "example": true,
+                            "default": true
+                          },
+                          "isMasked": {
+                            "type": "boolean",
+                            "description": "Whether a field is masked. If `true`, FieldData will be rendered as a series of asterisks in documents and viewable only by the sender of the sign request.",
+                            "example": false,
+                            "default": true
+                          },
+                          "type": {
+                            "type": "string",
+                            "description": "The field type. Possible values: `text`, `select`, `date`, `displayText`, `signature`, `initials`, `checkbox`, `zip`, `city`, `suite`, `street`, `state`, `signDate`, `signerName`, `signerEmail`",
+                            "example": "signature"
+                          },
+                          "reference": {
+                            "type": "string",
+                            "description": "A user-provided value that can be used to identify field and fieldData in API responses.",
+                            "example": "signatureField"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"errorKey\": \"Invalid request\",\n  \"errorMessage\": \"Error description\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "description": "Error key",
+                      "example": "Invalid request"
+                    },
+                    "errorMessage": {
+                      "type": "string",
+                      "description": "Error description",
+                      "example": "Error description"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"error\": \"invalid_token\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Oauth 2 authentication error. Typically `invalid_token`",
+                      "example": "invalid_token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/signrequest/{signrequestUuid}/download": {
+      "post": {
+        "summary": "Download files",
+        "description": "This endpoint returns files as Base64 encoded strings for a specified sign request. It will only return files for completed sign requests.",
+        "operationId": "download-files",
+        "parameters": [
+          {
+            "name": "signrequestUuid",
+            "in": "path",
+            "description": "The UUID of the sign request for which files should be returned.",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "unlock": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "If this parameter is true, then `clientSecret` is required and encrypted files will be decrypted before downloading."
+                  },
+                  "clientSecret": {
+                    "type": "string",
+                    "description": "A base64-encoded client-side encryption secret. Required when `unlock` is true. Used to decrypt encrypted files.",
+                    "example": "s3yE4FnvltgJYS5mdSiQ9+TpN2Ts7ohL4Jo1ccOc0TA="
+                  }
+                }
+              },
+              "examples": {
+                "Request with decryption": {
+                  "value": {
+                    "unlock": true,
+                    "clientSecret": "s3yE4FnvltgJYS5mdSiQ9+TpN2Ts7ohL4Jo1ccOc0TA="
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "[{\n    \"name\": \"company document_audit_trail\",\n    \"mimetype\": \"application/pdf\",\n    \"fileContent\": \"JVBERi0xLjMKJf////8KNyAwIG9iago8PAovVHlwZSAvRX0YXRlCi9..wolJUVPRgo=\"\n}]"
+                  }
+                },
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "The file name",
+                        "example": "company file_audit_trail"
+                      },
+                      "mimetype": {
+                        "type": "string",
+                        "description": "The file mimetype",
+                        "example": "application/pdf"
+                      },
+                      "fileContent": {
+                        "type": "string",
+                        "description": "The Base64 encoded file content",
+                        "example": "JVBERi0xLjMKJf////8KNyAwIG9iago8PAovVHlwZSAvRX0YXRlCi9..wolJUVPRgo="
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"errorKey\": \"Invalid request\",\n  \"errorMessage\": \"Error description\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "description": "Error key",
+                      "example": "Invalid request"
+                    },
+                    "errorMessage": {
+                      "type": "string",
+                      "description": "Error description",
+                      "example": "Error description"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"error\": \"invalid_token\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Oauth 2 authentication error. Typically `invalid_token`",
+                      "example": "invalid_token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/files/signrequest/{signrequestUuid}/download": {
+      "post": {
+        "summary": "Download file URLs",
+        "description": "This endpoint returns temporary file URLs for a specified sign request. It will only return URLs for completed sign requests.",
+        "operationId": "download-file-urls",
+        "parameters": [
+          {
+            "name": "signrequestUuid",
+            "in": "path",
+            "description": "The UUID of the sign request for which temporary file URLs should be returned.",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "[{\"id\":2836030,\"url\":\"https://batch-documents.s3.amazonaws.com/70951267-9735-453b-a5c8-2dc478f68d06?response-content-disposition=attachment%3B%20filename%20%3D%22Completed%20sign%20request%20webhook%20test_0.pdf%22&response-content-type=application%2Fpdf&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240324T170733Z&X-Amz-SignedHeaders=host&X-Amz-Expires=599&X-Amz-Credential=AKIAEXAMPLEEXAMPLE00%2F20240324%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=0000000000000000000000000000000000000000000000000000000000000001\",\"expiration\":\"2024-03-24 17:17:33\"},{\"id\":2836031,\"url\":\"https://batch-documents.s3.amazonaws.com/c7eb9870-4352-4bff-94cf-e2a0f153f9f8?response-content-disposition=attachment%3B%20filename%20%3D%22Completed%20sign%20request%20webhook%20test_1.pdf%22&response-content-type=application%2Fpdf&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240324T170733Z&X-Amz-SignedHeaders=host&X-Amz-Expires=599&X-Amz-Credential=AKIAEXAMPLEEXAMPLE00%2F20240324%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=0000000000000000000000000000000000000000000000000000000000000002\",\"expiration\":\"2024-03-24 17:17:33\"}]"
+                  }
+                },
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "uuid": {
+                        "type": "string",
+                        "description": "The file id",
+                        "example": "2836030"
+                      },
+                      "url": {
+                        "type": "string",
+                        "description": "A temporary URL for downloading a file",
+                        "example": "https://batch-documents.s3.amazonaws.com/70951267-9735-453b-a5c8-2dc478f68d06?response-content-disposition=attachment%3B%20filename%20%3D%22Completed%20sign%20request%20webhook%20test_0.pdf%22&response-content-type=application%2Fpdf&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240324T170733Z&X-Amz-SignedHeaders=host&X-Amz-Expires=599&X-Amz-Credential=AKIAEXAMPLEEXAMPLE00%2F20240324%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=0000000000000000000000000000000000000000000000000000000000000001"
+                      },
+                      "expiration": {
+                        "type": "string",
+                        "description": "The time a URL expires",
+                        "example": "2024-03-24 17:17:33"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"errorKey\": \"Invalid request\",\n  \"errorMessage\": \"Error description\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "description": "Error key",
+                      "example": "Invalid request"
+                    },
+                    "errorMessage": {
+                      "type": "string",
+                      "description": "Error description",
+                      "example": "Error description"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"error\": \"invalid_token\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Oauth 2 authentication error. Typically `invalid_token`",
+                      "example": "invalid_token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/signrequest/file/{fileUuid}/download": {
+      "post": {
+        "summary": "Download file URL",
+        "description": "This endpoint returns a temporary URL for a specified fileId. It will only return URLs for completed sign requests.",
+        "operationId": "download-file-url",
+        "parameters": [
+          {
+            "name": "fileUuid",
+            "in": "path",
+            "description": "The UUID of the file for which a temporary URL should be returned.",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\"id\":2836030,\"url\":\"https://batch-documents.s3.amazonaws.com/70951267-9735-453b-a5c8-2dc478f68d06?response-content-disposition=attachment%3B%20filename%20%3D%22Completed%20sign%20request%20webhook%20test_0.pdf%22&response-content-type=application%2Fpdf&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240324T170733Z&X-Amz-SignedHeaders=host&X-Amz-Expires=599&X-Amz-Credential=AKIAEXAMPLEEXAMPLE00%2F20240324%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=0000000000000000000000000000000000000000000000000000000000000001\",\"expiration\":\"2024-03-24 17:17:33\"}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "uuid": {
+                      "type": "string",
+                      "description": "The file id",
+                      "example": "2836030"
+                    },
+                    "url": {
+                      "type": "string",
+                      "description": "The temporary URL",
+                      "example": "https://batch-documents.s3.amazonaws.com/70951267-9735-453b-a5c8-2dc478f68d06?response-content-disposition=attachment%3B%20filename%20%3D%22Completed%20sign%20request%20webhook%20test_0.pdf%22&response-content-type=application%2Fpdf&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240324T170733Z&X-Amz-SignedHeaders=host&X-Amz-Expires=599&X-Amz-Credential=AKIAEXAMPLEEXAMPLE00%2F20240324%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=0000000000000000000000000000000000000000000000000000000000000001"
+                    },
+                    "expiration": {
+                      "type": "string",
+                      "description": "The time a URL expires",
+                      "example": "2024-03-24 17:17:33"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"errorKey\": \"Invalid request\",\n  \"errorMessage\": \"Error description\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "description": "Error key",
+                      "example": "Invalid request"
+                    },
+                    "errorMessage": {
+                      "type": "string",
+                      "description": "Error description",
+                      "example": "Error description"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"error\": \"invalid_token\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Oauth 2 authentication error. Typically `invalid_token`",
+                      "example": "invalid_token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/signrequest/{signrequestUuid}/audit_trail/download": {
+      "post": {
+        "summary": "Download audit trail",
+        "description": "This endpoint returns a PDF audit trail as a Base64 encoded string for a specified sign request.",
+        "operationId": "download-audit-trail",
+        "parameters": [
+          {
+            "name": "signrequestUuid",
+            "in": "path",
+            "description": "The UUID of the sign request for which an audit trail should be returned.",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"name\": \"company document_audit_trail\",\n    \"mimetype\": \"application/pdf\",\n    \"fileContent\": \"JVBERi0xLjMKJf////8KNyAwIG9iago8PAovVHlwZSAvRX0YXRlCi9..wolJUVPRgo=\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "The file name",
+                      "example": "company document_audit_trail"
+                    },
+                    "mimetype": {
+                      "type": "string",
+                      "description": "The file mimetype",
+                      "example": "application/pdf"
+                    },
+                    "fileContent": {
+                      "type": "string",
+                      "description": "The Base64 encoded file content",
+                      "example": "JVBERi0xLjMKJf////8KNyAwIG9iago8PAovVHlwZSAvRX0YXRlCi9..wolJUVPRgo="
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"errorKey\": \"Invalid request\",\n  \"errorMessage\": \"Error description\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorKey": {
+                      "type": "string",
+                      "description": "Error key",
+                      "example": "Invalid request"
+                    },
+                    "errorMessage": {
+                      "type": "string",
+                      "description": "Error description",
+                      "example": "Error description"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"error\": \"invalid_token\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Oauth 2 authentication error. Typically `invalid_token`",
+                      "example": "invalid_token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "x-readme": {
+    "headers": [],
+    "explorer-enabled": true,
+    "proxy-enabled": true,
+    "Samuelples-enabled": true
+  },
+  "x-readme-fauxas": true
+}

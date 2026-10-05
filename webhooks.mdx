@@ -25,7 +25,9 @@ to ignore an event you have already handled.
 
 ## Verify the signature
 
-Every endpoint has a signing secret (`whsec_…`), returned when the endpoint is created. Each request carries:
+Every endpoint has a signing secret (`whsec_…`), returned when the endpoint is created. In the app, open the
+endpoint and choose **Show secrets** to see it again, or **Replace signing secret** to issue a new one (the old one
+stops working immediately). Each request carries:
 
 | Header | Value |
 |---|---|
@@ -53,8 +55,9 @@ function isFromBatch(rawBody, header, secret) {
 
 ## If your tool cannot check a signature
 
-Some no-code tools can only compare a fixed value. Create (or update) the endpoint with `useStaticSecret: true`
-and we also send a fixed secret (`whsk_…`) in the `X-Webhook-Secret` header. It is returned when it is added. A signature is stronger, because it also protects the body and cannot be
+Some no-code tools can only compare a fixed value. Tick **Send a fixed secret header** on the endpoint (or create
+or update it through the API with `useStaticSecret: true`) and we also send a fixed secret (`whsk_…`) in the
+`X-Webhook-Secret` header. The API returns it when it is added; the app shows it under **Show secrets**. A signature is stronger, because it also protects the body and cannot be
 replayed; use it whenever you can.
 
 ## Endpoint URLs
